@@ -1,16 +1,25 @@
-# flutter_app
 
-A new Flutter project.
+# Psychiatrist App
 
-## Getting Started
+## Overview
+This is a private psychiatrist app designed to recommend psychologists to patients and provide preliminary diagnoses based on symptoms and connect both sides together. It’s developed as a final year project.
 
-This project is a starting point for a Flutter application.
+## Features
+- **User Authentication**
+- **Profile Management**
+- **Symptom Checker**
+- **Appointment Scheduling**
+- **Sessions**
+- **Feedback System**
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
+- **Frontend**: Flutter
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Recommendation System**: Python
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+   ```
+
+## License
+This project is licensed under the GNU GPLv3 License - see the [LICENSE](LICENSE) file for details.
