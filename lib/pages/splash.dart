@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
+//import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_app/utils.dart';
+//import 'package:flutter_app/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Splash extends StatelessWidget {
+  const Splash({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
+    return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Stack(
@@ -29,14 +30,14 @@ class Splash extends StatelessWidget {
               ),
             ),
           ),
-    Container(
-            padding: EdgeInsets.fromLTRB(32.1, 12.1, 32, 93.4),
+          Container(
+            padding: const EdgeInsets.fromLTRB(32.1, 12.1, 32, 93.4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 43.8),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 43.8),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: SizedBox(
@@ -46,25 +47,27 @@ class Splash extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 2, 0, 0.1),
+                            margin: const EdgeInsets.fromLTRB(0, 2, 0, 0.1),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 6.1, 0),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 6.1, 0),
                                   child: Text(
                                     '18:30',
                                     style: GoogleFonts.getFont(
                                       'Inter',
                                       fontWeight: FontWeight.w500,
                                       fontSize: 15,
-                                      color: Color(0xFF000000),
+                                      color: const Color(0xFF000000),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0.9),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 0.9),
                                   child: SizedBox(
                                     width: 18.1,
                                     height: 17.1,
@@ -83,7 +86,8 @@ class Splash extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 2, 14.7, 0.5),
+                                  margin: const EdgeInsets.fromLTRB(
+                                      0, 2, 14.7, 0.5),
                                   child: SizedBox(
                                     width: 25.1,
                                     height: 17.6,
@@ -93,7 +97,8 @@ class Splash extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                   child: SizedBox(
                                     width: 23.2,
                                     height: 20.1,
@@ -103,7 +108,7 @@ class Splash extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                                  margin: const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                   child: SizedBox(
                                     width: 31.1,
                                     height: 18.1,
@@ -121,21 +126,21 @@ class Splash extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 49.5, 90.4),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 49.5, 90.4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 2.2, 2.4),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 2.2, 2.4),
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Color(0xFFFFFFFF),
                           ),
                           child: Container(
                             width: 53.2,
                             height: 59.4,
-                            padding: EdgeInsets.fromLTRB(0, 3.7, 0, 3.7),
+                            padding: const EdgeInsets.fromLTRB(0, 3.7, 0, 3.7),
                             child: SizedBox(
                               width: 53.2,
                               height: 52,
@@ -147,14 +152,14 @@ class Splash extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 25.7, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 25.7, 0, 0),
                         child: Text(
                           'Just Talk',
                           style: GoogleFonts.getFont(
                             'Inter',
                             fontWeight: FontWeight.w500,
                             fontSize: 30,
-                            color: Color(0xFF273686),
+                            color: const Color(0xFF273686),
                           ),
                         ),
                       ),
@@ -162,7 +167,7 @@ class Splash extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 42),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 42),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: SizedBox(
@@ -175,26 +180,26 @@ class Splash extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(5.9, 0, 0, 122.5),
+                  margin: const EdgeInsets.fromLTRB(5.9, 0, 0, 122.5),
                   child: Text(
                     '  Get the care you deserve ',
                     style: GoogleFonts.getFont(
                       'Inter',
                       fontWeight: FontWeight.w700,
                       fontSize: 26,
-                      color: Color(0xFF0C0150),
+                      color: const Color(0xFF0C0150),
                     ),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(6.4, 0, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(6.4, 0, 0, 0),
                   child: Text(
                     'Get Started',
                     style: GoogleFonts.getFont(
                       'Inter',
                       fontWeight: FontWeight.w500,
                       fontSize: 30,
-                      color: Color(0xFFFFFFFF),
+                      color: const Color(0xFFFFFFFF),
                     ),
                   ),
                 ),

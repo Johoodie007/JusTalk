@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
+//import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_app/utils.dart';
+//import 'package:flutter_app/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Doc extends StatelessWidget {
+  const Doc({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
+    return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Stack(
@@ -22,20 +23,21 @@ class Doc extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 410),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 410),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFEFEFEF),
+                      color: const Color(0xFFEFEFEF),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Container(
-                      padding: EdgeInsets.fromLTRB(14, 24.1, 0, 283),
+                      padding: const EdgeInsets.fromLTRB(14, 24.1, 0, 283),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(22.1, 0, 22.1, 41.9),
+                            margin:
+                                const EdgeInsets.fromLTRB(22.1, 0, 22.1, 41.9),
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: Row(
@@ -43,19 +45,21 @@ class Doc extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(0, 0, 6.1, 0),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 0, 6.1, 0),
                                     child: Text(
                                       '18:30',
                                       style: GoogleFonts.getFont(
                                         'Inter',
                                         fontWeight: FontWeight.w500,
                                         fontSize: 15,
-                                        color: Color(0xFF000000),
+                                        color: const Color(0xFF000000),
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0.9),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0.9),
                                     child: SizedBox(
                                       width: 18.1,
                                       height: 17.1,
@@ -72,13 +76,14 @@ class Doc extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Color(0xFFFFFFFF),
+                                color: const Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Container(
                                 width: 41,
                                 height: 35,
-                                padding: EdgeInsets.fromLTRB(10, 7.5, 16.9, 5.3),
+                                padding: const EdgeInsets.fromLTRB(
+                                    10, 7.5, 16.9, 5.3),
                                 child: SizedBox(
                                   width: 14,
                                   height: 22.1,
@@ -96,20 +101,20 @@ class Doc extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Container(
+                  child: SizedBox(
                     width: 393,
                     height: 274,
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(35),
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           fit: BoxFit.contain,
                           image: AssetImage(
                             'assets/images/basemap_image.png',
                           ),
                         ),
                       ),
-                      child: Container(
+                      child: const SizedBox(
                         width: 393,
                         height: 274,
                       ),
@@ -136,14 +141,14 @@ class Doc extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(34),
-                image: DecorationImage(
+                image: const DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage(
                     'assets/images/ellipse_3.jpeg',
                   ),
                 ),
               ),
-              child: Container(
+              child: const SizedBox(
                 width: 68,
                 height: 68,
               ),
@@ -157,14 +162,14 @@ class Doc extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage(
                       'assets/images/rectangle_15.png',
                     ),
                   ),
                 ),
-                child: Container(
+                child: const SizedBox(
                   width: 429,
                   height: 513,
                 ),
@@ -176,20 +181,20 @@ class Doc extends StatelessWidget {
             bottom: -28,
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xFF202B7D),
+                color: const Color(0xFF202B7D),
                 borderRadius: BorderRadius.circular(40),
               ),
               child: SizedBox(
                 width: 431,
                 height: 112,
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 30, 0, 46.1),
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 46.1),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 5.7, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 5.7, 0, 0),
                         child: SizedBox(
                           width: 30.1,
                           height: 30.2,
@@ -199,7 +204,7 @@ class Doc extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 5.7, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 5.7, 0, 0),
                         child: SizedBox(
                           width: 30.1,
                           height: 30.2,
@@ -209,7 +214,7 @@ class Doc extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 5.7, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 5.7, 0, 0),
                         child: SizedBox(
                           width: 30.1,
                           height: 30.2,
@@ -219,7 +224,7 @@ class Doc extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 5.9),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 5.9),
                         width: 30,
                         height: 30,
                         child: SizedBox(
@@ -247,7 +252,7 @@ class Doc extends StatelessWidget {
                   'Inter',
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
-                  color: Color(0xFF000000),
+                  color: const Color(0xFF000000),
                 ),
               ),
             ),
@@ -265,7 +270,7 @@ class Doc extends StatelessWidget {
                     'Inter',
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
-                    color: Color(0xFF000000),
+                    color: const Color(0xFF000000),
                   ),
                 ),
               ),
@@ -370,7 +375,7 @@ class Doc extends StatelessWidget {
                   'Inter',
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  color: Color(0xFF000000),
+                  color: const Color(0xFF000000),
                 ),
               ),
             ),
@@ -386,7 +391,7 @@ class Doc extends StatelessWidget {
                   'Inter',
                   fontWeight: FontWeight.w700,
                   fontSize: 21,
-                  color: Color(0xFF000000),
+                  color: const Color(0xFF000000),
                 ),
               ),
             ),
@@ -402,7 +407,7 @@ class Doc extends StatelessWidget {
                   'Inter',
                   fontWeight: FontWeight.w700,
                   fontSize: 21,
-                  color: Color(0xFF000000),
+                  color: const Color(0xFF000000),
                 ),
               ),
             ),

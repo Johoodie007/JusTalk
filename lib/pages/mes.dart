@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
+//import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_app/utils.dart';
+//import 'package:flutter_app/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Mes extends StatelessWidget {
+  const Mes({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
+    return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 0, 1, 0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0x4DD9D9D9),
               ),
               child: Stack(
@@ -94,10 +95,10 @@ class Mes extends StatelessWidget {
                       ),
                     ),
                   ),
-            SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     child: Container(
-                      padding: EdgeInsets.fromLTRB(3, 12.1, 11.2, 51),
+                      padding: const EdgeInsets.fromLTRB(3, 12.1, 11.2, 51),
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
@@ -108,31 +109,40 @@ class Mes extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(29.1, 0, 25.9, 2.8),
+                                  margin: const EdgeInsets.fromLTRB(
+                                      29.1, 0, 25.9, 2.8),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(0, 2, 0, 0.1),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 2, 0, 0.1),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              margin: EdgeInsets.fromLTRB(0, 0, 6.1, 0),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 0, 6.1, 0),
                                               child: Text(
                                                 '18:30',
                                                 style: GoogleFonts.getFont(
                                                   'Inter',
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 15,
-                                                  color: Color(0xFF000000),
+                                                  color:
+                                                      const Color(0xFF000000),
                                                 ),
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.fromLTRB(0, 0, 0, 0.9),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 0.9),
                                               child: SizedBox(
                                                 width: 18.1,
                                                 height: 17.1,
@@ -147,11 +157,14 @@ class Mes extends StatelessWidget {
                                       SizedBox(
                                         width: 96.3,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              margin: EdgeInsets.fromLTRB(0, 2, 4, 0.5),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 2, 4, 0.5),
                                               child: SizedBox(
                                                 width: 25.1,
                                                 height: 17.6,
@@ -161,7 +174,8 @@ class Mes extends StatelessWidget {
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.fromLTRB(0, 0, 12.7, 0),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 0, 12.7, 0),
                                               child: SizedBox(
                                                 width: 23.2,
                                                 height: 20.1,
@@ -171,7 +185,8 @@ class Mes extends StatelessWidget {
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 2, 0, 0),
                                               child: SizedBox(
                                                 width: 31.1,
                                                 height: 18.1,
@@ -187,18 +202,20 @@ class Mes extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 8.5),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 8.5),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFF9F9F9),
+                                        color: const Color(0xFFF9F9F9),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Container(
                                         width: 41,
                                         height: 35,
-                                        padding: EdgeInsets.fromLTRB(10, 8.3, 16.9, 4.6),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 8.3, 16.9, 4.6),
                                         child: SizedBox(
                                           width: 14,
                                           height: 22.1,
@@ -211,25 +228,29 @@ class Mes extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(18.9, 0, 18.9, 105),
+                                  margin: const EdgeInsets.fromLTRB(
+                                      18.9, 0, 18.9, 105),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5.5, 23.5, 0),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 5.5, 23.5, 0),
                                         child: Text(
                                           'Dr. Mariam Mousa',
                                           style: GoogleFonts.getFont(
                                             'Inter',
                                             fontWeight: FontWeight.w700,
                                             fontSize: 20,
-                                            color: Color(0xFF000000),
+                                            color: const Color(0xFF000000),
                                           ),
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(0, 0, 12, 4.3),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 0, 12, 4.3),
                                         child: SizedBox(
                                           width: 25.1,
                                           height: 25.2,
@@ -239,7 +260,8 @@ class Mes extends StatelessWidget {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(0, 8.1, 10, 4.7),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 8.1, 10, 4.7),
                                         child: SizedBox(
                                           width: 25.1,
                                           height: 16.8,
@@ -249,7 +271,8 @@ class Mes extends StatelessWidget {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5, 0, 4),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 5, 0, 4),
                                         child: SizedBox(
                                           width: 25.1,
                                           height: 20.4,
@@ -262,91 +285,88 @@ class Mes extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(35, 0, 35, 55),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(35, 0, 35, 55),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Text(
-                                      'God Morning, 
-                                How You doing Jo?',
+                                      'God Morning, How You doing Jo?',
                                       style: GoogleFonts.getFont(
                                         'Inter',
                                         fontWeight: FontWeight.w700,
                                         fontSize: 23,
-                                        color: Color(0xFF0000FF),
+                                        color: const Color(0xFF0000FF),
                                       ),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 46),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 46),
                                   child: Text(
-                                    'I’m Not Okay Doc,
-                                I’m Depressed And
-                                Can’t Sleep',
+                                    'I’m Not Okay Doc,I’m Depressed And Can’t Sleep',
                                     style: GoogleFonts.getFont(
                                       'Inter',
                                       fontWeight: FontWeight.w700,
                                       fontSize: 22,
-                                      color: Color(0xE5FFFFFF),
+                                      color: const Color(0xE5FFFFFF),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 107, 38),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 107, 38),
                                   child: Align(
                                     alignment: Alignment.topCenter,
                                     child: Text(
-                                      'It’s Okay Not Felling
-                                Okay Joe,
-                                When Its Started?',
+                                      'It’s Okay Not Fellin, Okay Joe, When Its Started?',
                                       style: GoogleFonts.getFont(
                                         'Inter',
                                         fontWeight: FontWeight.w700,
                                         fontSize: 22,
-                                        color: Color(0xFF0000FF),
+                                        color: const Color(0xFF0000FF),
                                       ),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(2, 0, 2, 43),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(2, 0, 2, 43),
                                   child: Text(
-                                    'Three Months Ago,
-                                I got Divorced 
-                                And Didn't See My
-                                Kids Since Then',
+                                    'Three Months Ago, I got Divorced And Didnt See My Kids Since Then',
                                     style: GoogleFonts.getFont(
                                       'Inter',
                                       fontWeight: FontWeight.w700,
                                       fontSize: 22,
-                                      color: Color(0xE5FFFFFF),
+                                      color: const Color(0xE5FFFFFF),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(30, 0, 30, 62),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(30, 0, 30, 62),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Text(
-                                      'Lets Talk About Your
-                                Ex Wife...',
+                                      'Lets Talk About Your Ex Wife...',
                                       style: GoogleFonts.getFont(
                                         'Inter',
                                         fontWeight: FontWeight.w700,
                                         fontSize: 21,
-                                        color: Color(0xFF0000FF),
+                                        color: const Color(0xFF0000FF),
                                       ),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(14.8, 0, 14.8, 0),
+                                  margin: const EdgeInsets.fromLTRB(
+                                      14.8, 0, 14.8, 0),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF0000FF),
+                                      color: const Color(0xFF0000FF),
                                       borderRadius: BorderRadius.circular(25),
                                     ),
-                                    child: Container(
+                                    child: const SizedBox(
                                       width: 61,
                                       height: 59,
                                     ),
@@ -364,7 +384,7 @@ class Mes extends StatelessWidget {
                                 width: 71,
                                 height: 64,
                                 child: SvgPicture.asset(
-                                  'assets/images/rectangle_7.jpeg.jpeg',
+                                  //  'assets/images/rectangle_7.jpeg.jpeg',
                                   'assets/vectors/rectangle_72_x2.svg',
                                 ),
                               ),
@@ -382,28 +402,28 @@ class Mes extends StatelessWidget {
               bottom: 3,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0x40000000)),
-                  color: Color(0xFFFFFFFF),
+                  border: Border.all(color: const Color(0x40000000)),
+                  color: const Color(0xFFFFFFFF),
                 ),
                 child: SizedBox(
                   width: 449,
                   height: 128,
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 32, 26, 33),
+                    padding: const EdgeInsets.fromLTRB(15, 32, 26, 33),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 2, 17, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 2, 17, 0),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xFF000000)),
+                            border: Border.all(color: const Color(0xFF000000)),
                             borderRadius: BorderRadius.circular(35),
-                            color: Color(0xFFFFFFFF),
+                            color: const Color(0xFFFFFFFF),
                           ),
                           child: Container(
                             width: 312,
-                            padding: EdgeInsets.fromLTRB(29, 19, 29, 18),
+                            padding: const EdgeInsets.fromLTRB(29, 19, 29, 18),
                             child: Opacity(
                               opacity: 0.65,
                               child: Text(
@@ -412,7 +432,7 @@ class Mes extends StatelessWidget {
                                   'Inter',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 20,
-                                  color: Color(0xFF000000),
+                                  color: const Color(0xFF000000),
                                 ),
                               ),
                             ),
