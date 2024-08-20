@@ -13,7 +13,7 @@ This is a private psychiatrist app designed to recommend psychologists to patien
 - **Feedback System**
 
 ## Tech Stack
-- **Frontend**: Flutter
+- **Frontend**: Flutter -dart-
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Recommendation System**: Python
