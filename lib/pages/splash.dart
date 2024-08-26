@@ -1,11 +1,29 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-//import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:flutter_app/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_app/pages/get_started.dart'; // Import the GetStarted page
 
-class Splash extends StatelessWidget {
+class Splash extends StatefulWidget {
   const Splash({super.key});
+
+  @override
+  SplashState createState() =>
+      SplashState(); // Remove underscore to make the state public
+}
+
+class SplashState extends State<Splash> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Navigation code: Navigate to GetStarted page after 3 seconds
+    Timer(const Duration(seconds: 10), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const GetStarted()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -93,7 +93,7 @@ class GetStarted extends StatelessWidget {
                         // Navigate to the Role page
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Role()),
+                          MaterialPageRoute(builder: (context) => const Role()),
                         );
                       },
                       child: Text(
