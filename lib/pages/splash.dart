@@ -6,7 +6,7 @@ import 'package:flutter_app/pages/get_started.dart'; // Import the GetStarted pa
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
-
+//working on a native splash
   @override
   SplashState createState() =>
       SplashState(); // Remove underscore to make the state public

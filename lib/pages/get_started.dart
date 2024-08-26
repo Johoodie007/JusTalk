@@ -5,7 +5,7 @@ import 'package:flutter_app/pages/role.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
-
+//simple one btn page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
