@@ -17,29 +17,29 @@ class GetStarted extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              padding: const EdgeInsets.fromLTRB(32.1, 12.1, 32, 93.4),
+              padding: const EdgeInsets.fromLTRB(32.1, 12.1, 45, 73.4),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 49.5, 90.4),
+                    margin: const EdgeInsets.fromLTRB(0, 00, 49.5, 90.4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: const EdgeInsets.fromLTRB(2, 78, 9.2, 6.4),
+                          margin: const EdgeInsets.fromLTRB(32, 98, 9.2, 6.4),
                           child: SizedBox(
                             width: 53.2,
-                            height: 59.4,
+                            height: 39.4,
                             child: SvgPicture.asset(
                               'assets/vectors/vector_15_x2.svg',
                             ),
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 80.7, 0, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 84.7, 0, 0),
                           child: Text(
                             'Just Talk',
                             style: GoogleFonts.getFont(
