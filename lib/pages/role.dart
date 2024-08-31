@@ -6,10 +6,6 @@ class Role extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Choose Your Role'),
-        backgroundColor: Colors.deepPurple,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -42,6 +38,10 @@ class Role extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      appBar: AppBar(
+        title: const Text('Choose Your Role'),
+        backgroundColor: const Color(0xFF273686),
       ),
     );
   }
