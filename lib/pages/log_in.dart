@@ -76,92 +76,8 @@ class LogIn extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          margin: const EdgeInsets.fromLTRB(14, 0, 14.4, 27.7),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(0, 2, 0, 0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          0, 0, 5.8, 0),
-                                      child: Text(
-                                        '18:30',
-                                        style: GoogleFonts.getFont(
-                                          'Inter',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                          color: const Color(0xFF000000),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 0, 0, 1),
-                                      child: SizedBox(
-                                        width: 18,
-                                        height: 17,
-                                        child: SvgPicture.asset(
-                                          'assets/vectors/vector_4_x2.svg',
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 95.8,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          0, 2, 4, 0.5),
-                                      child: SizedBox(
-                                        width: 25,
-                                        height: 17.5,
-                                        child: SvgPicture.asset(
-                                          'assets/vectors/vector_37_x2.svg',
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          0, 0, 12.7, 0),
-                                      child: SizedBox(
-                                        width: 23.1,
-                                        height: 20,
-                                        child: SvgPicture.asset(
-                                          'assets/vectors/vector_44_x2.svg',
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 2, 0, 0),
-                                      child: SizedBox(
-                                        width: 31,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          'assets/vectors/vector_22_x2.svg',
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
                           margin:
-                              const EdgeInsets.fromLTRB(31.1, 0, 31.1, 152.7),
+                              const EdgeInsets.fromLTRB(21.1, 0, 31.1, 102.7),
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: Row(
@@ -169,8 +85,8 @@ class LogIn extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 1.6),
+                                  margin: const EdgeInsets.fromLTRB(
+                                      0, 77.7, 0, 3.6),
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       color: Color(0xFFFFFFFF),
@@ -179,7 +95,7 @@ class LogIn extends StatelessWidget {
                                       width: 53,
                                       height: 59,
                                       padding: const EdgeInsets.fromLTRB(
-                                          0, 3.7, 0, 3.7),
+                                          0, 3.7, 0, 5.7),
                                       child: SizedBox(
                                         width: 53,
                                         height: 51.6,
@@ -192,7 +108,7 @@ class LogIn extends StatelessWidget {
                                 ),
                                 Container(
                                   margin:
-                                      const EdgeInsets.fromLTRB(0, 24.6, 0, 0),
+                                      const EdgeInsets.fromLTRB(7, 99.6, 0, 0),
                                   child: Text(
                                     'Just Talk',
                                     style: GoogleFonts.getFont(
@@ -208,7 +124,7 @@ class LogIn extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 4.5, 22),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 4.5, 9),
                           child: Text(
                             'Welcome Back',
                             style: GoogleFonts.getFont(
