@@ -45,19 +45,13 @@ class _SignUpState extends State<SignUp> {
         }),
       );
 
-      if (response.statusCode == 201) {
-        // If the server returns a 201 CREATED response,
-        // navigate to the login page or show a success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Signup successful!')),
-        );
+      if (response.statusCode == 200) {
+        // Navigate to the login page or show a success message
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const LogIn()),
         );
       } else {
-        // If the server returns an error response,
-        // show an error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Signup failed: ${response.body}')),
         );
@@ -103,22 +97,13 @@ class _SignUpState extends State<SignUp> {
                       style: GoogleFonts.getFont(
                         'Inter',
                         fontWeight: FontWeight.w500,
-                        fontSize: 30,
-                        color: const Color(0xFF273686),
+                        fontSize: 24,
+                        color: const Color(0xFF000000),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  'Register Please',
-                  style: GoogleFonts.getFont(
-                    'Inter',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30,
-                    color: const Color(0xFF000000),
-                  ),
-                ),
+                const SizedBox(height: 40),
                 Text(
                   'Your Information Is Totally Safe With Us',
                   style: GoogleFonts.getFont(
@@ -142,6 +127,12 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your full name';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -157,6 +148,15 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                        .hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -173,6 +173,14 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -189,43 +197,65 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    } else if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _signUp,
-                  child: Text('Sign Up'),
-                ),
-                const SizedBox(height: 20),
-                RichText(
-                  text: TextSpan(
-                    style: GoogleFonts.getFont(
-                      'Inter',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                      color: const Color(0xFF000000),
+                const SizedBox(height: 40),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _signUp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF060C4F), // Button color
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 15,
+                      ),
+                      textStyle: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    children: [
-                      const TextSpan(
-                        text: 'Already Have an Account? ',
+                    child: const Text('Sign Up'),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Already have an account? ',
+                      style: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 16,
+                        color: const Color(0xFF000000),
                       ),
-                      TextSpan(
-                        text: 'Log In',
-                        style: GoogleFonts.getFont(
-                          'Inter',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: const Color(0xFF0C0150),
+                      children: [
+                        TextSpan(
+                          text: 'Log In',
+                          style: GoogleFonts.getFont(
+                            'Inter',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF060C4F),
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LogIn(),
+                                ),
+                              );
+                            },
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LogIn()),
-                            );
-                          },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
