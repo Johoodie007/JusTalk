@@ -1,287 +1,226 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-//import 'dart:ui';
-import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:flutter_app/utils.dart';
+import 'package:flutter_app/pages/forgot_password.dart';
+import 'package:flutter_app/pages/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
   @override
+  _LogInState createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _logIn() async {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logging in...')),
+      );
+
+      final email = _emailController.text;
+      final password = _passwordController.text;
+
+      try {
+        final response = await http.post(
+          Uri.parse('http://localhost:5000/api/auth/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'email': email,
+            'password': password,
+          }),
+        );
+
+        if (!mounted) return; // Check if the widget is still in the widget tree
+
+        if (response.statusCode == 200) {
+          // Handle successful login
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login successful!')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: ${response.body}')),
+          );
+        }
+      } catch (e) {
+        if (!mounted) return; // Check if the widget is still in the widget tree
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('An error occurred: $e')),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFFFFF),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            right: -130.5,
-            top: -80,
-            child: Opacity(
-              opacity: 0.4,
-              child: SizedBox(
-                width: 281,
-                height: 270,
-                child: SvgPicture.asset(
-                  'assets/vectors/ellipse_21_x2.svg',
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFFFFF),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 100),
+                Text(
+                  'Welcome',
+                  style: GoogleFonts.getFont(
+                    'Inter',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 24,
+                    color: const Color(0xFF000000),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: -182.5,
-            top: -104,
-            child: Opacity(
-              opacity: 0.6,
-              child: SizedBox(
-                width: 304,
-                height: 262,
-                child: SvgPicture.asset(
-                  'assets/vectors/ellipse_11_x2.svg',
+                const SizedBox(height: 20),
+                SvgPicture.asset(
+                  'assets/vectors/vector_7_x2.svg',
+                  width: 100,
+                  height: 100,
                 ),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(18, 12, 23.5, 68),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned(
-                    left: -18,
-                    right: -23.5,
-                    bottom: -159,
-                    child: Opacity(
-                      opacity: 0.8,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0x40CACACA),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const SizedBox(
-                          width: 428,
-                          height: 773,
-                        ),
+                const SizedBox(height: 40),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Email',
+                    labelStyle: GoogleFonts.getFont(
+                      'Inter',
+                      fontSize: 20,
+                      color: const Color(0xFF000000).withOpacity(0.6),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                        .hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Password',
+                    labelStyle: GoogleFonts.getFont(
+                      'Inter',
+                      fontSize: 20,
+                      color: const Color(0xFF000000).withOpacity(0.6),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPassword()),
+                      );
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 16,
+                        color: const Color(0xFF060C4F),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _logIn,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF060C4F),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 15,
+                      ),
+                      textStyle: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: const Text('Log In'),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 16,
+                        color: const Color(0xFF000000),
+                      ),
                       children: [
-                        Container(
-                          margin:
-                              const EdgeInsets.fromLTRB(21.1, 0, 31.1, 102.7),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.fromLTRB(
-                                      0, 77.7, 0, 3.6),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFFFFFFF),
-                                    ),
-                                    child: Container(
-                                      width: 53,
-                                      height: 59,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 3.7, 0, 5.7),
-                                      child: SizedBox(
-                                        width: 53,
-                                        height: 51.6,
-                                        child: SvgPicture.asset(
-                                          'assets/vectors/vector_67_x2.svg',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.fromLTRB(7, 99.6, 0, 0),
-                                  child: Text(
-                                    'Just Talk',
-                                    style: GoogleFonts.getFont(
-                                      'Inter',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 30,
-                                      color: const Color(0xFF273686),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                        TextSpan(
+                          text: 'Sign Up',
+                          style: GoogleFonts.getFont(
+                            'Inter',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF060C4F),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 4.5, 9),
-                          child: Text(
-                            'Welcome Back',
-                            style: GoogleFonts.getFont(
-                              'Inter',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 30,
-                              color: const Color(0xFF000000),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(6.5, 0, 6.5, 6.3),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: SizedBox(
-                              width: 288,
-                              height: 211,
-                              child: SvgPicture.asset(
-                                'assets/vectors/undraw_online_chat_re_c_4_lx_1_x2.svg',
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(2.8, 0, 0, 28.5),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: -20.7,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox(
-                                    width: 383.7,
-                                    height: 68.9,
-                                    child: SvgPicture.asset(
-                                      'assets/vectors/rectangle_31_x2.svg',
-                                    ),
-                                  ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignUp(),
                                 ),
-                              ),
-                              Positioned(
-                                top: 94.2,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox(
-                                    width: 383.7,
-                                    height: 68.9,
-                                    child: SvgPicture.asset(
-                                      'assets/vectors/rectangle_4_x2.svg',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    19.2, 20.7, 0, 19.1),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          0, 0, 0, 86),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Opacity(
-                                          opacity: 0.4,
-                                          child: Text(
-                                            'Enter Email',
-                                            style: GoogleFonts.getFont(
-                                              'Inter',
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 24,
-                                              color: const Color(0xFF000000),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Opacity(
-                                        opacity: 0.4,
-                                        child: Text(
-                                          'Enter Password',
-                                          style: GoogleFonts.getFont(
-                                            'Inter',
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 24,
-                                            color: const Color(0xFF000000),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 2.8, 14.7),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                bottom: 0,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox(
-                                    width: 383.7,
-                                    height: 58.7,
-                                    child: SvgPicture.asset(
-                                      'assets/vectors/rectangle_1_x2.svg',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 383.7,
-                                padding: const EdgeInsets.fromLTRB(
-                                    0, 12.3, 14.2, 10.3),
-                                child: Text(
-                                  'Log In',
-                                  style: GoogleFonts.getFont(
-                                    'Inter',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 30,
-                                    color: const Color(0xFFFFFFFF),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(5.8, 0, 0, 0),
-                          child: Text(
-                            'Forgot Password',
-                            style: GoogleFonts.getFont(
-                              'Inter',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              color: const Color(0xFF0C0150),
-                            ),
-                          ),
+                              );
+                            },
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

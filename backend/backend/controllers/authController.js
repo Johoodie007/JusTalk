@@ -6,7 +6,6 @@ exports.register = async (req, res) => {
   const { fullName, email, password } = req.body;
 
   try {
-    // Check if user already exists by email
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ msg: 'User with this email already exists' });
@@ -18,13 +17,11 @@ exports.register = async (req, res) => {
       password,
     });
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
 
-    // Return JWT
     const payload = {
       user: {
         id: user.id,
@@ -44,4 +41,22 @@ exports.register = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server error');
   }
+
+  exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ msg: 'User with this email does not exist' });
+      }
+
+      // Here you would typically generate a password reset token and send it via email
+      // For simplicity, we'll just return a success message
+      res.json({ msg: 'Password reset email sent' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  };
 };
