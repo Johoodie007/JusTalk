@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/sign_up.dart';
 
 class Role extends StatelessWidget {
   const Role({super.key});
@@ -27,15 +29,19 @@ class Role extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, '/psychotherapist');
               },
+              recognizer: null,
             ),
             const SizedBox(height: 20),
             RoleOption(
-              role: 'Patient',
-              icon: Icons.person,
-              onTap: () {
-                Navigator.pushNamed(context, '/patient');
-              },
-            ),
+                role: 'Patient updated',
+                icon: Icons.person,
+                recognizer: TapGestureRecognizer(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignUp()),
+                  );
+                }),
           ],
         ),
       ),
@@ -53,7 +59,11 @@ class RoleOption extends StatelessWidget {
   final VoidCallback onTap;
 
   const RoleOption(
-      {super.key, required this.role, required this.icon, required this.onTap});
+      {super.key,
+      required this.role,
+      required this.icon,
+      required this.onTap,
+      required recognizer});
 
   @override
   Widget build(BuildContext context) {
