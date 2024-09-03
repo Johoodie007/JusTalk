@@ -19,7 +19,7 @@ class Role extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+                color: const Color(0xFF273686),
               ),
             ),
             const SizedBox(height: 40),
@@ -33,7 +33,7 @@ class Role extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             RoleOption(
-                role: 'Patient updated',
+                role: 'Patient',
                 icon: Icons.person,
                 recognizer: TapGestureRecognizer(),
                 onTap: () {
@@ -73,17 +73,17 @@ class RoleOption extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.deepPurple[50],
+          color: const Color(0xFF273686),
         ),
         child: Row(
           children: <Widget>[
-            Icon(icon, size: 30, color: Colors.deepPurple),
+            Icon(icon, size: 30, color: Colors.white),
             const SizedBox(width: 20),
             Text(
               role,
               style: const TextStyle(
                 fontSize: 20,
-                color: Colors.deepPurple,
+                color: Colors.white,
                 fontWeight: FontWeight.w500,
               ),
             ),
