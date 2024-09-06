@@ -19,7 +19,7 @@ class Role extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF273686),
+                color: Color(0xFF273686),
               ),
             ),
             const SizedBox(height: 40),
