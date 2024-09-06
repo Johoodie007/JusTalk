@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_app/pages/doc.dart';
+// import 'package:flutter_app/pages/doc.dart';
 //import 'package:flutter_app/pages/get_started.dart';
 //import 'package:flutter_app/pages/splash.dart';
 
