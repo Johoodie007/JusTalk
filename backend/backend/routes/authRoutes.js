@@ -1,7 +1,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { register, forgotPassword } = require('../controllers/authController');
-const User = require('../models/User');
+const { register, forgotPassword, upload } = require('../controllers/authController');
 const router = express.Router();
 
 // @route   POST api/auth/register
@@ -9,6 +8,7 @@ const router = express.Router();
 // @access  Public
 router.post(
   '/register',
+  upload.fields([{ name: 'cv', maxCount: 1 }, { name: 'certification', maxCount: 1 }]),
   [
     check('fullName', 'Full Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -39,18 +39,5 @@ router.post(
     forgotPassword(req, res);
   }
 );
-
-// @route   GET api/auth/users
-// @desc    Get all users
-// @access  Public
-router.get('/users', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
 
 module.exports = router;

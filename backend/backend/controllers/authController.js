@@ -1,9 +1,24 @@
+const multer = require('multer');
+const path = require('path');
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 exports.register = async (req, res) => {
   const { fullName, email, password } = req.body;
+  const cv = req.files['cv'] ? req.files['cv'][0].path : null;
+  const certification = req.files['certification'] ? req.files['certification'][0].path : null;
 
   try {
     let user = await User.findOne({ email });
@@ -15,6 +30,8 @@ exports.register = async (req, res) => {
       fullName,
       email,
       password,
+      cv,
+      certification,
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -41,22 +58,29 @@ exports.register = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server error');
   }
+};
+
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
 
   exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
-
     try {
       let user = await User.findOne({ email });
       if (!user) {
         return res.status(400).json({ msg: 'User with this email does not exist' });
       }
-
-      // Here you would typically generate a password reset token and send it via email
-      // For simplicity, we'll just return a success message
+      // Generate reset token and set expiration
+      const resetToken = crypto.randomBytes(20).toString('hex');
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+      await user.save();
+      // Send email with reset token
       res.json({ msg: 'Password reset email sent' });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
     }
   };
-};
+
+module.exports.upload = upload;

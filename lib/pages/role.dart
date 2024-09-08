@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/doc_sign_up.dart';
 import 'package:flutter_app/pages/sign_up.dart';
-
 class Role extends StatelessWidget {
   const Role({super.key});
 
@@ -27,7 +27,9 @@ class Role extends StatelessWidget {
               role: 'Psychotherapist',
               icon: Icons.medical_services,
               onTap: () {
-                Navigator.pushNamed(context, '/psychotherapist');
+                Navigator.push (context,
+                    MaterialPageRoute(builder: (context) => const DocSignUp()),
+                );
               },
               recognizer: null,
             ),
