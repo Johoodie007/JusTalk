@@ -19,7 +19,7 @@ class Role extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF273686),
+                color: Color(0xFF08082D),
               ),
             ),
             const SizedBox(height: 40),
@@ -48,8 +48,12 @@ class Role extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: const Text('Choose Your Role'),
+        title: const Text('Choose Your Role', style: TextStyle(
+          color: Color(0xFFE3E3EA),
+        ),
+        ),
         backgroundColor: const Color(0xFF273686),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
     );
   }

@@ -1,11 +1,17 @@
-validconst { validationResult } = require('express-validator');
+const express = require('express');
+const connectDB = require('./config/db');
+const app = express();
 
-     const validateRequest = (req, res, next) => {
-       const errors = validationResult(req);
-       if (!errors.isEmpty()) {
-         return res.status(400).json({ errors: errors.array() });
-       }
-       next();
-     };
+// Connect Database
+connectDB();
 
-     module.exports = validateRequest;ateRequest
+// Init Middleware
+app.use(express.json({ extended: false }));
+
+// Define Routes
+app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/doctor', require('./routes/doctorRoutes'));
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

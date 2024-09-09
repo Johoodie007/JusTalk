@@ -1,10 +1,10 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { register, forgotPassword, upload } = require('../controllers/authController');
+const { registerDoctor, forgotPasswordDoctor, upload } = require('../controllers/doctorController');
 const router = express.Router();
 
-// @route   POST api/auth/register
-// @desc    Register user
+// @route   POST api/doctor/register
+// @desc    Register doctor
 // @access  Public
 router.post(
   '/register',
@@ -19,12 +19,12 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    register(req, res);
+    registerDoctor(req, res);
   }
 );
 
-// @route   POST api/auth/forgot-password
-// @desc    Send password reset email
+// @route   POST api/doctor/forgot-password
+// @desc    Send password reset email for doctor
 // @access  Public
 router.post(
   '/forgot-password',
@@ -36,7 +36,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    forgotPassword(req, res);
+    forgotPasswordDoctor(req, res);
   }
 );
 
