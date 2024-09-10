@@ -2,7 +2,7 @@
 # Psychiatrist App
 
 ## Overview
-This is a private psychiatrist app designed to recommend psychologists to patients and provide preliminary diagnoses based on symptoms and connect both sides together. It’s developed as a final year project.
+A psychotherapy app designed to recommend psychologists to patients and provide preliminary diagnoses based on symptoms and connect both sides together. It’s developed as a final year project.
 
 ## Features
 - **User Authentication**
@@ -10,7 +10,6 @@ This is a private psychiatrist app designed to recommend psychologists to patien
 - **Symptom Checker**
 - **Appointment Scheduling**
 - **Sessions**
-- **Feedback System**
 
 ## Tech Stack
 - **Frontend**: Flutter -dart-
