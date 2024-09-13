@@ -3,6 +3,7 @@ const path = require('path');
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-exports.register = async (req, res) => {
+exports.registerUser = async (req, res) => {
   const { fullName, email, password } = req.body;
 
   try {
@@ -42,15 +43,15 @@ exports.register = async (req, res) => {
       },
     };
 
-    jwt.sign(
-      payload,
-      'your_jwt_secret',
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+jwt.sign(
+  payload,
+  process.env.JWT_SECRET,
+  { expiresIn: 3600 },
+  (err, token) => {
+    if (err) throw err;
+    res.json({ token });
+  }
+);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -71,6 +72,41 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
     // Send email with reset token
     res.json({ msg: 'Password reset email sent' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid Credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid Credentials' });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      'your_jwt_secret',
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

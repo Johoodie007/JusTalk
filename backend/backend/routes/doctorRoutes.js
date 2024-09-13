@@ -1,6 +1,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { registerDoctor, forgotPasswordDoctor, upload } = require('../controllers/doctorController');
+const { registerDoctor, loginDoctor, upload } = require('../controllers/doctorController');
 const router = express.Router();
 
 // @route   POST api/doctor/register
@@ -14,29 +14,30 @@ router.post(
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
   ],
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    registerDoctor(req, res);
+    await registerDoctor(req, res);
   }
 );
 
-// @route   POST api/doctor/forgot-password
-// @desc    Send password reset email for doctor
+// @route   POST api/doctor/login
+// @desc    Login doctor
 // @access  Public
 router.post(
-  '/forgot-password',
+  '/login',
   [
     check('email', 'Please include a valid email').isEmail(),
+    check('password', 'Password is required').exists(),
   ],
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    forgotPasswordDoctor(req, res);
+    await loginDoctor(req, res);
   }
 );
 

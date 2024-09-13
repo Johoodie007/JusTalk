@@ -1,6 +1,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { register, forgotPassword, upload } = require('../controllers/userController');
+const { registerUser, loginUser, forgotPassword } = require('../controllers/userController');
 const router = express.Router();
 
 // @route   POST api/user/register
@@ -18,12 +18,30 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    register(req, res);
+    registerUser(req, res);
+  }
+);
+
+// @route   POST api/user/login
+// @desc    Login user
+// @access  Public
+router.post(
+  '/login',
+  [
+    check('email', 'Please include a valid email').isEmail(),
+    check('password', 'Password is required').exists(),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    loginUser(req, res);
   }
 );
 
 // @route   POST api/user/forgot-password
-// @desc    Send password reset email
+// @desc    Forgot password
 // @access  Public
 router.post(
   '/forgot-password',

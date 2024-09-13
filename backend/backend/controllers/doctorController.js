@@ -3,6 +3,8 @@ const path = require('path');
 const Doctor = require('../models/doctorModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -17,8 +19,6 @@ const upload = multer({ storage: storage });
 
 exports.registerDoctor = async (req, res) => {
   const { fullName, email, password } = req.body;
-  const cv = req.files['cv'] ? req.files['cv'][0].path : null;
-  const certification = req.files['certification'] ? req.files['certification'][0].path : null;
 
   try {
     let doctor = await Doctor.findOne({ email });
@@ -30,9 +30,9 @@ exports.registerDoctor = async (req, res) => {
       fullName,
       email,
       password,
-      cv,
-      certification,
-      role: 'doctor',
+      Cv,
+      Certificate,
+      role: 'Doctor',
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -48,7 +48,7 @@ exports.registerDoctor = async (req, res) => {
 
     jwt.sign(
       payload,
-      'your_jwt_secret',
+      process.env.JWT_SECRET,
       { expiresIn: 3600 },
       (err, token) => {
         if (err) throw err;
@@ -61,20 +61,35 @@ exports.registerDoctor = async (req, res) => {
   }
 };
 
-exports.forgotPasswordDoctor = async (req, res) => {
-  const { email } = req.body;
+exports.loginDoctor = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
     let doctor = await Doctor.findOne({ email });
     if (!doctor) {
-      return res.status(400).json({ msg: 'Doctor with this email does not exist' });
+      return res.status(400).json({ msg: 'Invalid Credentials' });
     }
-    // Generate reset token and set expiration
-    const resetToken = crypto.randomBytes(20).toString('hex');
-    doctor.resetPasswordToken = resetToken;
-    doctor.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-    await doctor.save();
-    // Send email with reset token
-    res.json({ msg: 'Password reset email sent' });
+
+    const isMatch = await bcrypt.compare(password, doctor.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid Credentials' });
+    }
+
+    const payload = {
+      doctor: {
+        id: doctor.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
