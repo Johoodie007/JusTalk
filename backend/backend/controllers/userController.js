@@ -1,13 +1,14 @@
-const multer = require('multer');
-const path = require('path');
+const { validationResult } = require('express-validator');
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
+const multer = require('multer');
+const path = require('path');
 
+// Configure multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, process.env.UPLOAD_DIR || 'uploads/');
   },
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -16,7 +17,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Helper function to generate JWT token
+const generateToken = (id, role) => {
+  const payload = { id, role };
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || 3600 });
+};
+
+// Register User
 exports.registerUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { fullName, email, password } = req.body;
 
   try {
@@ -25,59 +38,22 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ msg: 'User with this email already exists' });
     }
 
-    user = new User({
-      fullName,
-      email,
-      password,
-      role: 'patient',
-    });
+    user = new User({ fullName, email, password, role: 'Patient' });
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 10);
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-jwt.sign(
-  payload,
-  process.env.JWT_SECRET,
-  { expiresIn: 3600 },
-  (err, token) => {
-    if (err) throw err;
+    const token = generateToken(user.id, user.role);
     res.json({ token });
-  }
-);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ msg: 'Server error' });
   }
 };
 
-exports.forgotPassword = async (req, res) => {
-  const { email } = req.body;
-  try {
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: 'User with this email does not exist' });
-    }
-    // Generate reset token and set expiration
-    const resetToken = crypto.randomBytes(20).toString('hex');
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-    await user.save();
-    // Send email with reset token
-    res.json({ msg: 'Password reset email sent' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
+// Login User
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -92,25 +68,10 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ msg: 'Invalid Credentials' });
     }
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      'your_jwt_secret',
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    const token = generateToken(user.id, user.role);
+    res.json({ token });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ msg: 'Server error' });
   }
 };
-
-module.exports.upload = upload;

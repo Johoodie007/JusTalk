@@ -13,12 +13,17 @@ router.post(
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
   ],
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    registerUser(req, res);
+    try {
+      await registerUser(req, res);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ msg: 'Server error' });
+    }
   }
 );
 
@@ -31,30 +36,23 @@ router.post(
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists(),
   ],
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    loginUser(req, res);
+    try {
+      await loginUser(req, res);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ msg: 'Server error' });
+    }
   }
 );
 
 // @route   POST api/user/forgot-password
 // @desc    Forgot password
 // @access  Public
-router.post(
-  '/forgot-password',
-  [
-    check('email', 'Please include a valid email').isEmail(),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    forgotPassword(req, res);
-  }
-);
+// Add your forgot password logic here
 
 module.exports = router;

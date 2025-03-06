@@ -2,13 +2,12 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { registerDoctor, loginDoctor, upload } = require('../controllers/doctorController');
 const router = express.Router();
+const upload = require('./multConf');
 
-// @route   POST api/doctor/register
-// @desc    Register doctor
-// @access  Public
+// Register Doctor
 router.post(
   '/register',
-  upload.fields([{ name: 'cv', maxCount: 1 }, { name: 'certification', maxCount: 1 }]),
+  upload.fields([{ name: 'cv', maxCount: 1 }, { name: 'certification', maxCount: 1 }])  ,
   [
     check('fullName', 'Full Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -19,13 +18,16 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    await registerDoctor(req, res);
+    try {
+      await registerDoctor(req, res);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ msg: 'Server error' });
+    }
   }
 );
 
-// @route   POST api/doctor/login
-// @desc    Login doctor
-// @access  Public
+// Login Doctor
 router.post(
   '/login',
   [
@@ -37,7 +39,12 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    await loginDoctor(req, res);
+    try {
+      await loginDoctor(req, res);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ msg: 'Server error' });
+    }
   }
 );
 
