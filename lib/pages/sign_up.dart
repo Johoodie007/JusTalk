@@ -10,10 +10,10 @@ class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
   @override
-  _SignUpState createState() => _SignUpState();
+  SignUpState createState() => SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -125,7 +125,7 @@ class _SignUpState extends State<SignUp> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -146,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -170,7 +170,7 @@ class _SignUpState extends State<SignUp> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -194,7 +194,7 @@ class _SignUpState extends State<SignUp> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),

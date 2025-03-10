@@ -2,14 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_app/pages/get_started.dart'; // Import the GetStarted page
+import 'package:flutter_app/pages/get_started.dart'; // Import GetStarted
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
-//working on a native splash
+
   @override
-  SplashState createState() =>
-      SplashState(); // Remove underscore to make the state public
+  SplashState createState() => SplashState();
 }
 
 class SplashState extends State<Splash> {
@@ -17,8 +16,8 @@ class SplashState extends State<Splash> {
   void initState() {
     super.initState();
 
-    // Navigation code: Navigate to GetStarted page after 3 seconds
-    Timer(const Duration(seconds: 10), () {
+    // Navigate to GetStarted page after 3 seconds
+    Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const GetStarted()),
       );
@@ -27,125 +26,66 @@ class SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFFFFF),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(32.1, 12.1, 32.1, 217.8),
+    double screenWidth = MediaQuery.of(context).size.width;
+    double imageWidth = screenWidth * 0.6; // Images take 60% of screen width
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 184.8),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: SizedBox(
-                  width: 346.1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 2, 0, 0.1),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
-                        ),
-                      ),
-                    ],
+            // Logo and Title
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/vectors/vector_11_x2.svg',
+                  width: imageWidth * 0.2,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'Just Talk',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 30,
+                    color: const Color(0xFF273686),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 40),
+
+            // Main Splash Image
+            SizedBox(
+              width: imageWidth,
+              child: SvgPicture.asset(
+                'assets/vectors/text_0_x2.svg',
+                fit: BoxFit.contain,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(2.6, 0, 0, 114.7),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 2.2, 2.8),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                      child: Container(
-                        width: 53.2,
-                        height: 59.4,
-                        padding: const EdgeInsets.fromLTRB(0, 3.7, 0, 3.7),
-                        child: SizedBox(
-                          width: 53.2,
-                          height: 52,
-                          child: SvgPicture.asset(
-                            'assets/vectors/vector_11_x2.svg',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 26.2, 0, 0),
-                    child: Text(
-                      'Just Talk',
-                      style: GoogleFonts.getFont(
-                        'Inter',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 30,
-                        color: const Color(0xFF273686),
-                      ),
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 20),
+
+            // Subtitle Image
+            SizedBox(
+              width: imageWidth * 0.8,
+              child: SvgPicture.asset(
+                'assets/vectors/text_1_x2.svg',
+                fit: BoxFit.contain,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(7.7, 0, 0, 115.5),
-              child: SizedBox(
-                width: 278,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 22.7),
-                      width: 222,
-                      height: 96.1,
-                      child: SizedBox(
-                        width: 222,
-                        height: 96.1,
-                        child: SvgPicture.asset(
-                          'assets/vectors/text_0_x2.svg',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0.3, 0, 0.3, 0),
-                      width: 222,
-                      height: 24,
-                      child: SizedBox(
-                        width: 221.4,
-                        height: 24,
-                        child: SvgPicture.asset(
-                          'assets/vectors/text_1_x2.svg',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(4.9, 0, 5.2, 0),
+            const SizedBox(height: 40),
+
+            // Tagline Text
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                '       The best counseling from the best psychologists',
-                style: GoogleFonts.getFont(
-                  'Inter',
+                'The best counseling from the best psychologists',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
                   fontWeight: FontWeight.w700,
-                  fontSize: 26,
+                  fontSize: 20,
                   color: const Color(0xFF0C0150),
                 ),
               ),

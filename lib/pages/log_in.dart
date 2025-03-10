@@ -11,10 +11,10 @@ class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
   @override
-  _LogInState createState() => _LogInState();
+  LogInState createState() => LogInState();
 }
 
-class _LogInState extends State<LogIn> {
+class LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -104,7 +104,7 @@ class _LogInState extends State<LogIn> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                        color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -128,7 +128,7 @@ class _LogInState extends State<LogIn> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),

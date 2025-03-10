@@ -7,10 +7,10 @@ class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  ForgotPasswordState createState() => ForgotPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
+class ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
@@ -96,7 +96,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     labelStyle: GoogleFonts.getFont(
                       'Inter',
                       fontSize: 20,
-                      color: const Color(0xFF000000).withOpacity(0.6),
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),

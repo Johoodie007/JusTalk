@@ -5,108 +5,86 @@ import 'package:flutter_app/pages/role.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
-//simple one btn page
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Stack(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(32.1, 12.1, 45, 73.4),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 00, 49.5, 90.4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(32, 98, 9.2, 6.4),
-                          child: SizedBox(
-                            width: 53.2,
-                            height: 39.4,
-                            child: SvgPicture.asset(
-                              'assets/vectors/vector_15_x2.svg',
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 84.7, 0, 0),
-                          child: Text(
-                            'Just Talk',
-                            style: GoogleFonts.getFont(
-                              'Inter',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 45,
-                              color: const Color(0xFF273686),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+            // Logo & Title
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/vectors/vector_15_x2.svg',
+                  width: 40,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'Just Talk',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 28,
+                    color: const Color(0xFF273686),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 42),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: SizedBox(
-                        width: 316,
-                        height: 379,
-                        child: SvgPicture.asset(
-                          'assets/vectors/undraw_active_support_re_b_7_sj_1_x2.svg',
-                        ),
-                      ),
-                    ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+
+            // Mental Health Image (Smallest Size)
+            SizedBox(
+              width: 100, // Small fixed width
+              height: 100, // Small fixed height
+              child: Image.asset(
+                'assets/images/mental_health.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Text Below Image
+            Text(
+              'Get the care you deserve',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+                color: const Color(0xFF0C0150),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Start Button
+            SizedBox(
+              width: screenWidth * 0.4, // Adjusted button width
+              height: 45, // Reduced button height
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFF273686),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(5.9, 0, 0, 122.5),
-                    child: Text(
-                      '  Get the care you deserve ',
-                      style: GoogleFonts.getFont(
-                        'Inter',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 26,
-                        color: const Color(0xFF0C0150),
-                      ),
-                    ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Role()),
+                  );
+                },
+                child: Text(
+                  'Start',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: const Color(0xFF273686),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Navigate to the Role page
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Role()),
-                        );
-                      },
-                      child: Text(
-                        'Start',
-                        style: GoogleFonts.getFont(
-                          'Inter',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ],

@@ -18,11 +18,17 @@ dependencies:
    flutter_lints: ^5.0.0
    lints: ^5.1.1
    material_color_utilities: ^0.11.1
+   flutter_webrtc: ^0.12.12
+   socket_io_client: ^2.0.3
 
 
 flutter:
    uses-material-design: true
    assets:
+
+      - assets/images/istockphoto-1226853921-612x612.jpg
+      - assets/vectors/vector_15_x2.svg
+      - assets/images/mental_health.png
       - assets/vectors/rectangle_13_x2.svg
       - assets/vectors/rectangle_41_x2.svg
       - assets/vectors/rectangle_11_x2.svg

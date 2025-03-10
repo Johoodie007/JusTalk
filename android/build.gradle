@@ -1,18 +1,37 @@
+// This block is to configure the repositories that Gradle will use to download dependencies
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        google()  // Google's repository
+        mavenCentral()  // Maven Central repository
     }
 }
 
-rootProject.buildDir = '../build'
+rootProject.buildDir = '../build'  // Define the location for build output files
+
+// This block is ensuring each subproject has its own build directory
 subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.buildDir = "${rootProject.buildDir}/${project.name}"  // Sets a specific build dir for each subproject
 }
+
+// Ensures that the ':app' project is evaluated before any other subprojects
 subprojects {
     project.evaluationDependsOn(':app')
 }
 
+// Defines a custom task to clean the project by deleting the build directory
 tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    delete rootProject.buildDir  // Deletes the root build directory
+}
+
+// Optional: You can also add the buildscript block here for version compatibility
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Make sure to update to a compatible version of the Android Gradle plugin
+        classpath 'com.android.tools.build:gradle:8.1.4'  // Update this line to the desired plugin version
+    }
 }
