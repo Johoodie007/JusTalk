@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_app/pages/mes.dart';
-// import 'package:flutter_app/pages/doc.dart';
-//import 'package:flutter_app/pages/get_started.dart';
-//import 'package:flutter_app/pages/splash.dart';
 
-//import 'package:flutter_app/pages/doc.dart';
-//import 'package:flutter_app/pages/splash.dart';
-//import 'package:flutter_app/pages/get_started.dart';
-//import 'package:flutter_app/pages/log_in.dart';
-//import 'package:flutter_app/pages/main_page.dart';
-import 'package:flutter_app/pages/mes.dart';
-//import 'package:flutter_app/pages/sign_up.dart';
-//import 'package:flutter_app/pages/splash.dart';
-//import 'package:flutter_app/pages/splash.dart';
+import 'package:flutter_app/pages/splash.dart';
+
+//import 'package:flutter_app/pages/mes.dart'; currently on development and testing
+
 
 void main() => runApp(const MyApp());
 
@@ -21,11 +12,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter App',
+
+    return MaterialApp(
+      title: 'Just Talk',
+
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       home: Scaffold(
-        body: Mes(),
+       // body: Mes(),
+        body: Splash(),
       ),
     );
+
   }
 }

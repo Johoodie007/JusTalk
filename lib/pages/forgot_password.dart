@@ -64,11 +64,12 @@ class ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
-        title: Text(
-          'Forgot Password',
-          style: GoogleFonts.getFont('Inter', fontWeight: FontWeight.w500),
+        title: const Text(
+          'JusTalk',
+          style: TextStyle(color: Color(0xFFE3E3EA)),
         ),
-        backgroundColor: const Color(0xFF060C4F),
+        backgroundColor: const Color(0xFF273686),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(

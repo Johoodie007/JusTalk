@@ -1,37 +1,38 @@
-// This block is to configure the repositories that Gradle will use to download dependencies
-allprojects {
+// The buildscript block for defining Gradle dependencies and plugins
+buildscript {
     repositories {
-        google()  // Google's repository
-        mavenCentral()  // Maven Central repository
+        google()       // Google's repository
+        mavenCentral() // Maven Central
+    }
+    dependencies {
+        // Specify the Gradle Plugin version
+        classpath 'com.android.tools.build:gradle:8.1.4' // Make sure this matches your setup
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10" // Kotlin plugin version
     }
 }
 
-rootProject.buildDir = '../build'  // Define the location for build output files
-
-// This block is ensuring each subproject has its own build directory
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"  // Sets a specific build dir for each subproject
-}
-
-// Ensures that the ':app' project is evaluated before any other subprojects
-subprojects {
-    project.evaluationDependsOn(':app')
-}
-
-// Defines a custom task to clean the project by deleting the build directory
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir  // Deletes the root build directory
-}
-
-// Optional: You can also add the buildscript block here for version compatibility
-
-buildscript {
+// All projects should use the listed repositories
+allprojects {
     repositories {
         google()
         mavenCentral()
     }
-    dependencies {
-        // Make sure to update to a compatible version of the Android Gradle plugin
-        classpath 'com.android.tools.build:gradle:8.1.4'  // Update this line to the desired plugin version
-    }
+}
+
+// Define the location for the root build directory
+rootProject.buildDir = '../build'
+
+// Ensure subprojects have their own build directory
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+// Ensure `:app` is evaluated before other subprojects
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+// Task to clean the build directory
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
 }

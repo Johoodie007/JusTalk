@@ -1,4 +1,4 @@
-// a separate `multerConfig.js`
+
 const multer = require('multer');
 
 const storage = multer.diskStorage({

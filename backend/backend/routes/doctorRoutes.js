@@ -1,13 +1,13 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { registerDoctor, loginDoctor, upload } = require('../controllers/doctorController');
+const { registerDoctor, loginDoctor, forgotPassword, resetPassword } = require('../controllers/doctorController');
 const router = express.Router();
-const upload = require('./multConf');
+const upload = require('../middleware/multconf');
 
 // Register Doctor
 router.post(
   '/register',
-  upload.fields([{ name: 'cv', maxCount: 1 }, { name: 'certification', maxCount: 1 }])  ,
+  upload.fields([{ name: 'cv', maxCount: 1 }, { name: 'certification', maxCount: 1 }]),
   [
     check('fullName', 'Full Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -47,5 +47,25 @@ router.post(
     }
   }
 );
+
+// Forgot Password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    await forgotPassword(req, res);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Reset Password
+router.post('/reset-password/:token', async (req, res) => {
+  try {
+    await resetPassword(req, res);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
 
 module.exports = router;

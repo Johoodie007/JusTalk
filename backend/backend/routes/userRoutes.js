@@ -1,11 +1,9 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { registerUser, loginUser, forgotPassword } = require('../controllers/userController');
+const { registerUser, loginUser, forgotPassword, resetPassword } = require('../controllers/userController');
 const router = express.Router();
 
-// @route   POST api/user/register
-// @desc    Register user
-// @access  Public
+// Register User
 router.post(
   '/register',
   [
@@ -27,9 +25,7 @@ router.post(
   }
 );
 
-// @route   POST api/user/login
-// @desc    Login user
-// @access  Public
+// Login User
 router.post(
   '/login',
   [
@@ -50,9 +46,24 @@ router.post(
   }
 );
 
-// @route   POST api/user/forgot-password
-// @desc    Forgot password
-// @access  Public
-// Add your forgot password logic here
+// Forgot Password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    await forgotPassword(req, res);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Reset Password
+router.post('/reset-password/:token', async (req, res) => {
+  try {
+    await resetPassword(req, res);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
 
 module.exports = router;

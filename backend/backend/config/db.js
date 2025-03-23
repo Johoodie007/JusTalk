@@ -1,15 +1,21 @@
+require('dotenv').config({ path: './port.env' });  // Ensure the path is correct
 const mongoose = require('mongoose');
 
+// Connect to MongoDB Database
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true, // Add useCreateIndex option
-      useFindAndModify: false, // Add useFindAndModify option
-    });
+    // Debugging line to ensure the URI is being loaded
+    console.log('Mongo URI:', process.env.MONGO_URI);
+
+    if (!process.env.MONGO_URI) {
+      throw new Error('MONGO_URI is not defined in port.env');
+    }
+
+    // Connect to MongoDB without deprecated options
+    await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB connected...');
   } catch (err) {
+    // Specific MongoDB error handling
     if (err.name === 'MongoNetworkError') {
       console.error('Error connecting to MongoDB: Network error');
     } else if (err.name === 'MongoError' && err.code === 18) {

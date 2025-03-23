@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'webrtc_service.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Mes extends StatefulWidget {
   const Mes({super.key});
@@ -14,9 +13,9 @@ class Mes extends StatefulWidget {
 }
 
 class MesState extends State<Mes> {
-  bool _isTextMode = false; // To toggle between text mode and voice note mode
+  bool _isTextMode = false;
+  bool isCallInProgress = false; // Track call state
   final TextEditingController _controller = TextEditingController();
-
   final WebRTCService webRTCService = WebRTCService();
 
   RTCVideoRenderer localRenderer = RTCVideoRenderer();
@@ -26,7 +25,7 @@ class MesState extends State<Mes> {
   void initState() {
     super.initState();
     _setupRenderers();
-    webRTCService.initialize(localRenderer, remoteRenderer);
+    requestMediaPermissions();
   }
 
   Future<void> _setupRenderers() async {
@@ -34,16 +33,47 @@ class MesState extends State<Mes> {
     await remoteRenderer.initialize();
   }
 
+  Future<void> requestMediaPermissions() async {
+    PermissionStatus cameraStatus = await Permission.camera.request();
+    PermissionStatus micStatus = await Permission.microphone.request();
+
+    if (cameraStatus.isGranted && micStatus.isGranted) {
+      print("Permissions granted");
+    } else {
+      print("Permissions denied");
+      openAppSettings();
+    }
+  }
+
+  void startCall() {
+    setState(() {
+      isCallInProgress = true;
+    });
+    webRTCService.startCall();
+  }
+
+  void endCall() {
+    setState(() {
+      isCallInProgress = false;
+    });
+    webRTCService.endCall();
+  }
+
+  void sendMessage() {
+    String message = _controller.text.trim();
+    if (message.isNotEmpty) {
+      print("Sending message: $message");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    double maxWidth = MediaQuery.of(context).size.width * 0.8;
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Column(
           children: [
-            // Header (Doctor Info + Call buttons + Three-dot menu)
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -52,21 +82,24 @@ class MesState extends State<Mes> {
                   Row(
                     children: [
                       CircleAvatar(
-                        radius: 25,
+                        radius: 30,
                         backgroundColor: Colors.grey[300],
-                        child: SvgPicture.asset('assets/vectors/rectangle_72_x2.svg', width: 35),
+                        child: SvgPicture.asset(
+                          'assets/vectors/rectangle_72_x2.svg',
+                          width: 45,
+                        ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Dr. Mariam Mousa',
-                            style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700),
+                            style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w700),
                           ),
                           Text(
                             'Online',
-                            style: GoogleFonts.inter(fontSize: 12, color: Colors.green),
+                            style: GoogleFonts.inter(fontSize: 14, color: Colors.green),
                           ),
                         ],
                       ),
@@ -75,12 +108,12 @@ class MesState extends State<Mes> {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () => webRTCService.startCall(),
-                        icon: Icon(Icons.video_call, color: Colors.blue),
+                        onPressed: startCall,
+                        icon: Icon(Icons.video_call, color: Colors.blue, size: 30),
                       ),
                       IconButton(
-                        onPressed: () => webRTCService.endCall(),
-                        icon: Icon(Icons.call_end, color: Colors.red),
+                        onPressed: endCall,
+                        icon: Icon(Icons.call_end, color: Colors.red, size: 30),
                       ),
                     ],
                   ),
@@ -88,7 +121,9 @@ class MesState extends State<Mes> {
               ),
             ),
 
-            // Video Streams
+            if (isCallInProgress)
+              Center(child: CircularProgressIndicator()), // Show a loading indicator for call
+
             Expanded(
               child: Row(
                 children: [
@@ -97,20 +132,6 @@ class MesState extends State<Mes> {
                 ],
               ),
             ),
-
-            // Chat Messages
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ListView(
-                  children: [
-                    // Chat bubbles go here
-                  ],
-                ),
-              ),
-            ),
-
-            // Message Input Box
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -135,7 +156,7 @@ class MesState extends State<Mes> {
                   GestureDetector(
                     onTap: () {
                       if (_isTextMode) {
-                        // Send message functionality
+                        sendMessage();
                       } else {
                         // Voice note functionality
                       }

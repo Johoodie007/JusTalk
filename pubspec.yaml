@@ -20,7 +20,9 @@ dependencies:
    material_color_utilities: ^0.11.1
    flutter_webrtc: ^0.12.12
    socket_io_client: ^2.0.3
-
+   permission_handler: ^10.2.0
+dependency_overrides:
+   permission_handler_android: ^11.0.0
 
 flutter:
    uses-material-design: true

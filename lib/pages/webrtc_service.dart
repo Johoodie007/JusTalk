@@ -12,10 +12,7 @@ class WebRTCService {
   void initialize(RTCVideoRenderer localRenderer, RTCVideoRenderer remoteRenderer) {
     _connectToSignalingServer();
 
-    _getUserMedia().then((stream) {
-      localStream = stream;
-      localRenderer.srcObject = stream;
-    });
+    // Remove immediate getUserMedia call from here.
   }
 
   void _connectToSignalingServer() {
@@ -30,6 +27,8 @@ class WebRTCService {
   }
 
   Future<void> startCall() async {
+    // Only initialize getUserMedia here when the call starts.
+    localStream = await _getUserMedia();
     peerConnection = await _createPeerConnection();
     peerConnection?.addStream(localStream!);
 
@@ -87,6 +86,7 @@ class WebRTCService {
     return connection;
   }
 
+  // Only request user media when the call is initiated
   Future<MediaStream> _getUserMedia() async {
     final Map<String, dynamic> mediaConstraints = {
       "audio": true,
