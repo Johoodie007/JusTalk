@@ -21,4 +21,8 @@ UserSchema.methods.generateResetPasswordToken = function () {
   return this.resetPasswordToken;
 };
 
+// Compare password (used when user logs in)
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 module.exports = mongoose.model('User', UserSchema);

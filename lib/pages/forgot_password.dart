@@ -20,6 +20,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
     super.dispose();
   }
 
+  // Function to handle password reset
   Future<void> _resetPassword() async {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -30,7 +31,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://localhost:5000/api/auth/forgot-password'),
+          Uri.parse('http://192.168.1.28:5000/api/user/forgot-password'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

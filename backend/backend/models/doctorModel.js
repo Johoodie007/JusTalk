@@ -7,8 +7,8 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ['Doctor'], required: true },
   verified: { type: Boolean, default: false },
-  resetPasswordToken: { type: String }, // Correctly define as a field
-  resetPasswordExpires: { type: Date },  // Correctly define as a field
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
   date: { type: Date, default: Date.now }
 });
 
@@ -21,4 +21,7 @@ UserSchema.methods.generateResetPasswordToken = function() {
   return this.resetPasswordToken;
 };
 
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 module.exports = mongoose.model('Doctor', UserSchema);

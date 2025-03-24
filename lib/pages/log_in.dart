@@ -38,7 +38,7 @@ class LogInState extends State<LogIn> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://localhost:5000/api/user/login'),
+          Uri.parse('http:////192.168.1.28:5000/api/user/login'),
           headers: {'Content-Type': 'application/json; charset=UTF-8'},
           body: jsonEncode(<String, String>{
             'email': email,

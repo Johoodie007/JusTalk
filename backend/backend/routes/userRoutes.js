@@ -46,24 +46,16 @@ router.post(
   }
 );
 
-// Forgot Password
-router.post('/forgot-password', async (req, res) => {
-  try {
-    await forgotPassword(req, res);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Server error' });
-  }
-});
 
-// Reset Password
-router.post('/reset-password/:token', async (req, res) => {
-  try {
-    await resetPassword(req, res);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Server error' });
-  }
-});
+// Route for User forgot password
+router.post('/forgot-password', [
+  check('email', 'Please include a valid email').isEmail()
+], forgotPasswordUser);
+
+// Route for User reset password
+router.post('/reset-password', [
+  check('token', 'Token is required').not().isEmpty(),
+  check('password', 'Password must be at least 6 characters').isLength({ min: 6 })
+], resetPasswordUser);
 
 module.exports = router;

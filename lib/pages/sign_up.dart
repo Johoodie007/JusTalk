@@ -44,7 +44,7 @@ class SignUpState extends State<SignUp> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://localhost:5000/api/user/register'),
+          Uri.parse('http:////192.168.1.28:5000/api/user/register'),
           headers: {'Content-Type': 'application/json; charset=UTF-8'},
 
           body: jsonEncode(<String, String>{
