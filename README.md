@@ -2,12 +2,11 @@
 # Psychiatrist App
 
 ## Overview
-A psychotherapy app designed to recommend psychologists to patients and provide preliminary diagnoses based on symptoms and connect both sides together. It’s developed as a final year project.
+A psychotherapy app designed to recommend psychologists to patients annd connect both sides together. It’s developed as a final year project.
 
 ## Features
 - **User Authentication**
 - **Profile Management**
-- **Symptom Checker**
 - **Appointment Scheduling**
 - **Sessions**
 
@@ -15,8 +14,6 @@ A psychotherapy app designed to recommend psychologists to patients and provide 
 - **Frontend**: Flutter -dart-
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
-- **Recommendation System**: Python
-
 
    ```
 
