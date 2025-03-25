@@ -40,7 +40,7 @@ class LogInState extends State<LogIn> {
 
       try {
         // 1. Trim and lowercase email input
-        final email = _emailController.text.trim().toLowerCase();
+        final email = _emailController.text.trim();
         final password = _passwordController.text;
 
         // 2. Add connection timeout

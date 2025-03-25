@@ -2,17 +2,15 @@ const { validationResult } = require('express-validator');
 const Doctor = require('../models/doctorModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-
 // Helper function to generate JWT token
+
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE || '1h',
   });
 };
 
-// Register Doctor
 exports.registerDoctor = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -27,34 +25,54 @@ exports.registerDoctor = async (req, res) => {
       return res.status(400).json({ msg: 'Doctor with this email already exists' });
     }
 
-    const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+//   const salt = await bcrypt.genSalt(10); // Salt rounds
+//      const hashedPassword = await bcrypt.hash(password, salt);
+//      console.log("🔐 Hashed Password:", hashedPassword);
 
-    doctor = new Doctor({ fullName, email, password: hashedPassword });
+    doctor = new Doctor({ fullName, email, password: hashedPassword, role: 'Doctor' });
     await doctor.save();
 
-    res.status(201).json({ token: generateToken(doctor.id) });
+    res.status(201).json({
+      message: "Doctor registered successfully",
+      token: generateToken(doctor.id),
+    });
+
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server error' });
   }
 };
-
-// Login Doctor
 exports.loginDoctor = async (req, res) => {
-  const { email, password } = req.body;
+    try {
+        // Find doctor by email
+        const { email, password } = req.body;
+        let doctor = await Doctor.findOne({ email });
+        if (!doctor) {
+            return res.status(400).json({ msg: 'Doctor not found' });
+        }
 
-  try {
-    const doctor = await Doctor.findOne({ email });
-    if (!doctor || !(await bcrypt.compare(password, doctor.password))) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+        console.log("✅ Entered Password:", password);
+        console.log("🔐 Stored Hashed Password:", doctor.password); // This should be hashed
+
+        // Compare entered password with stored hash
+        const isMatch = await bcrypt.compare(password, doctor.password); // No need to hash the entered password again
+        console.log("⚡ Password Match:", isMatch);
+
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Incorrect password' });
+        }
+
+        // Generate a JWT token and send success message
+        const token = generateToken(doctor.id, doctor.role);
+        res.json({
+            msg: 'Login successful',
+            token: token,
+        });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
     }
-
-    res.json({ token: generateToken(doctor.id) });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Server error' });
-  }
 };
 
 // Forgot Password for Doctor
@@ -96,7 +114,7 @@ exports.forgotPasswordDoctor = async (req, res) => {
 };
 
 // Reset Password for Doctor
-exports.resetPasswordDoctor = async (req, res) => {
+ exports.resetPasswordDoctor = async (req, res) => {
   const { token, password } = req.body;
 
   try {
@@ -109,8 +127,10 @@ exports.resetPasswordDoctor = async (req, res) => {
       return res.status(400).json({ msg: 'Invalid or expired token' });
     }
 
-    const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 10);
-    doctor.password = await bcrypt.hash(password, salt);
+   const saltRounds = process.env.SALT_ROUNDS ? Number(process.env.SALT_ROUNDS) : 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+     doctor.password = await bcrypt.hash(password, salt);
+
 
     doctor.resetPasswordToken = undefined;
     doctor.resetPasswordExpires = undefined;

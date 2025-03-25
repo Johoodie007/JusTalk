@@ -14,7 +14,8 @@ const rateLimit = require('express-rate-limit');
 // Initialize express app
 const app = express();
 app.use(cors());
-app.use(express.json()); // Enables JSON body parsing
+app.use(express.json()); // ✅ Allows JSON parsing
+app.use(express.urlencoded({ extended: true })); // ✅ Allows form data parsing
 
 
 // Serve profile images statically

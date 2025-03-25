@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
+//const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
 // Helper function to generate JWT token
@@ -39,7 +39,7 @@ exports.loginUser = async (req, res) => {
 
   try {
     // Enhanced email normalization
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanEmail = email.trim();
     const user = await User.findOne({ email: cleanEmail }).select('+password');
 
     if (!user) {
