@@ -7,8 +7,9 @@ const nodemailer = require('nodemailer');
 
 // Helper function to generate JWT token
 const generateToken = (id, role) => {
-  const payload = { id, role };
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || 3600 });
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE || '1h',
+  });
 };
 
 // Register Doctor
@@ -26,15 +27,13 @@ exports.registerDoctor = async (req, res) => {
       return res.status(400).json({ msg: 'Doctor with this email already exists' });
     }
 
-    doctor = new Doctor({ fullName, email, password, role: 'Doctor' });
-
     const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 10);
-    doctor.password = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
+    doctor = new Doctor({ fullName, email, password: hashedPassword });
     await doctor.save();
 
-    const token = generateToken(doctor.id, doctor.role);
-    res.json({ token });
+    res.status(201).json({ token: generateToken(doctor.id) });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server error' });
@@ -46,18 +45,12 @@ exports.loginDoctor = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    let doctor = await Doctor.findOne({ email });
-    if (!doctor) {
+    const doctor = await Doctor.findOne({ email });
+    if (!doctor || !(await bcrypt.compare(password, doctor.password))) {
       return res.status(400).json({ msg: 'Invalid Credentials' });
     }
 
-    const isMatch = await bcrypt.compare(password, doctor.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
-    }
-
-    const token = generateToken(doctor.id, doctor.role);
-    res.json({ token });
+    res.json({ token: generateToken(doctor.id) });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server error' });
@@ -74,7 +67,7 @@ exports.forgotPasswordDoctor = async (req, res) => {
       return res.status(400).json({ msg: 'Doctor with this email does not exist' });
     }
 
-    const resetToken = crypto.randomBytes(20).toString('hex');
+    const resetToken = crypto.randomBytes(32).toString('hex');
     doctor.resetPasswordToken = resetToken;
     doctor.resetPasswordExpires = Date.now() + 3600000;
     await doctor.save();
@@ -92,7 +85,7 @@ exports.forgotPasswordDoctor = async (req, res) => {
     await transporter.sendMail({
       to: doctor.email,
       subject: 'Password Reset Request',
-      html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+      html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
     });
 
     res.json({ msg: 'Password reset link has been sent to your email.' });
@@ -121,8 +114,8 @@ exports.resetPasswordDoctor = async (req, res) => {
 
     doctor.resetPasswordToken = undefined;
     doctor.resetPasswordExpires = undefined;
-
     await doctor.save();
+
     res.json({ msg: 'Password successfully updated' });
   } catch (err) {
     console.error(err.message);

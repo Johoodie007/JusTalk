@@ -1,6 +1,7 @@
 // Ensure dotenv is at the top to load environment variables
 require('dotenv').config({ path: '../port.env' });  // Load the port.env file from the root directory
 const cors = require('cors');
+const path = require('path');  // 🔹 Add this line at the top of your app.js
 
 console.log(process.env);  // Debugging line to see all environment variables
 
@@ -14,6 +15,10 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 app.use(cors());
 app.use(express.json()); // Enables JSON body parsing
+
+
+// Serve profile images statically
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Connect to MongoDB database
 connectDB().catch(err => {

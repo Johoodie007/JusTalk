@@ -1,8 +1,10 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/forgot_password.dart';
+import 'package:flutter_app/pages/profile_page.dart';
 import 'package:flutter_app/pages/sign_up.dart';
-import 'package:flutter_app/pages/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +22,7 @@ class LogInState extends State<LogIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -27,45 +30,58 @@ class LogInState extends State<LogIn> {
     super.dispose();
   }
 
+// In log_in.dart - Enhanced network handling
   Future<void> _logIn() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Logging in...')),
+      final scaffold = ScaffoldMessenger.of(context);
+      scaffold.showSnackBar(
+        const SnackBar(content: Text('Verifying...')),
       );
 
-      final email = _emailController.text;
-      final password = _passwordController.text;
-
       try {
+        // 1. Trim and lowercase email input
+        final email = _emailController.text.trim().toLowerCase();
+        final password = _passwordController.text;
+
+        // 2. Add connection timeout
         final response = await http.post(
-          Uri.parse('http:////192.168.1.28:5000/api/user/login'),
-          headers: {'Content-Type': 'application/json; charset=UTF-8'},
-          body: jsonEncode(<String, String>{
+          Uri.parse('http://192.168.1.28:5000/api/user/login'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
             'email': email,
             'password': password,
           }),
-        );
+        ).timeout(const Duration(seconds: 10));
 
-        if (!mounted) return; // Check if the widget is still in the widget tree
+        // 3. Handle different status codes
+        final responseBody = jsonDecode(response.body);
+        print('Response: ${response.statusCode} - $responseBody');
 
         if (response.statusCode == 200) {
-          // Handle successful login
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login successful!')),
-          );
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const MainPage()),
+            MaterialPageRoute(
+              builder: (context) => ProfilePage(
+                userId: responseBody['userId'].toString(),
+              ),
+            ),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login failed: ${response.body}')),
+          scaffold.showSnackBar(
+            SnackBar(content: Text(responseBody['msg'] ?? 'Login failed')),
           );
         }
+      } on SocketException {
+        scaffold.showSnackBar(
+          const SnackBar(content: Text('Network connection failed')),
+        );
+      } on TimeoutException {
+        scaffold.showSnackBar(
+          const SnackBar(content: Text('Server timeout')),
+        );
       } catch (e) {
-        if (!mounted) return; // Check if the widget is still in the widget tree
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred: $e')),
+        scaffold.showSnackBar(
+          SnackBar(content: Text('Error: ${e.toString()}')),
         );
       }
     }

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');  // 🔹 Added bcryptjs import
 const crypto = require('crypto');
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -12,17 +13,45 @@ const UserSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 });
 
-// Generate a reset password token and expiration
-UserSchema.methods.generateResetPasswordToken = function () {
-  // Generate a token using crypto.randomBytes
+
+// userModel.js - UPDATED
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+  } catch (err) {
+    next(new Error('Password hashing failed'));
+  }
+});
+
+
+// 🔹 Generate a reset password token and expiration
+userSchema.methods.generateResetPasswordToken = function () {
   this.resetPasswordToken = crypto.randomBytes(32).toString('hex');
-  // Set expiration time for the reset token (1 hour from now)
   this.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
   return this.resetPasswordToken;
 };
-
-// Compare password (used when user logs in)
+// Update password comparison method
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+  try {
+    return await bcrypt.compare(candidatePassword, this.password);
+  } catch (error) {
+    throw new Error('Password comparison failed');
+  }
 };
-module.exports = mongoose.model('User', UserSchema);
+
+// Add virtual field for clean user data
+userSchema.virtual('cleanUser').get(function () {
+  return {
+    id: this._id,
+    email: this.email,
+    fullName: this.fullName,
+    role: this.role,
+  };
+});
+
+
+// Export the User model
+module.exports = mongoose.model('User', userSchema);

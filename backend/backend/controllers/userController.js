@@ -11,58 +11,59 @@ const generateToken = (id, role) => {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || 3600 });
 };
 
-// Register User
+// userController.js - UPDATED
 exports.registerUser = async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
   const { fullName, email, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User with this email already exists' });
+    if (await User.findOne({ email })) {
+      return res.status(400).json({ msg: 'Email already exists' });
     }
 
-    user = new User({ fullName, email, password, role: 'Patient' });
-
-    const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 10);
-    user.password = await bcrypt.hash(password, salt);
-
+    // Remove manual hashing - let pre-save hook handle it
+    const user = new User({ fullName, email, password, role: 'Patient' });
     await user.save();
 
-    const token = generateToken(user.id, user.role);
-    res.json({ token });
+    res.json({ token: generateToken(user.id, user.role) });
   } catch (err) {
-    console.error(err.message);
+    console.error('Registration Error:', err.stack);
     res.status(500).json({ msg: 'Server error' });
   }
 };
 
-// Login User
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    // Enhanced email normalization
+    const cleanEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ email: cleanEmail }).select('+password');
+
     if (!user) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+      console.log('Login Fail: No user for', cleanEmail);
+      return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
+    // Enhanced password validation
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+      console.log('Password mismatch for', cleanEmail);
+      return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
-    const token = generateToken(user.id, user.role);
-    res.json({ token });
+    res.json({
+      token: generateToken(user.id, user.role),
+      userId: user.id.toString()
+    });
   } catch (err) {
-    console.error(err.message);
+    console.error('Login Error:', err.stack);
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
 exports.forgotPasswordUser = async (req, res) => {
   const { email } = req.body;
 
