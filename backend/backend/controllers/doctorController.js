@@ -25,16 +25,14 @@ exports.registerDoctor = async (req, res) => {
       return res.status(400).json({ msg: 'Doctor with this email already exists' });
     }
 
-//   const salt = await bcrypt.genSalt(10); // Salt rounds
-//      const hashedPassword = await bcrypt.hash(password, salt);
-//      console.log("🔐 Hashed Password:", hashedPassword);
+    // No need to hash the password manually
+    doctor = new Doctor({ fullName, email, password, role: 'Doctor' });
 
-    doctor = new Doctor({ fullName, email, password: hashedPassword, role: 'Doctor' });
-    await doctor.save();
+    await doctor.save(); // The password will be hashed automatically by the pre-save hook
 
     res.status(201).json({
       message: "Doctor registered successfully",
-      token: generateToken(doctor.id),
+      token: generateToken(doctor.id, doctor.role),
     });
 
   } catch (err) {
@@ -42,6 +40,7 @@ exports.registerDoctor = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
 exports.loginDoctor = async (req, res) => {
     try {
         // Find doctor by email
