@@ -9,6 +9,7 @@ const {
   forgotPassword,
   resetPassword,
 } = require("../controllers/userController");
+const upload = require('../middleware/multconf');
 
 const router = express.Router();
 
@@ -56,31 +57,20 @@ router.post(
 );
 
 // Get user by ID
-router.get("/get-user/:userId", async (req, res) => {
+router.get('/users/:userId', async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    res.json({
-      username: user.username,
-      bio: user.bio,
-      profilePic: user.profilePic ? `/uploads/${user.profilePic}` : "",
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching user", error: err });
-  }
+     res.json(user);
+  } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Server error" });
+        }
 });
 
-// Set up multer for image uploads
-const storage = multer.diskStorage({
-  destination: path.join(__dirname, "../uploads"),
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-const upload = multer({ storage: storage });
 
-// Update Profile API (Handles Bio & Profile Picture)
+// Update Profile
 router.post("/update-profile", upload.single("profilePic"), async (req, res) => {
   try {
     const { userId, bio } = req.body;
@@ -91,8 +81,6 @@ router.post("/update-profile", upload.single("profilePic"), async (req, res) => 
     }
 
     const user = await User.findByIdAndUpdate(userId, updateFields, { new: true });
-    if (!user) return res.status(404).json({ message: "User not found" });
-
     res.json({ message: "Profile updated successfully", user });
   } catch (err) {
     res.status(500).json({ message: "Error updating profile", error: err });

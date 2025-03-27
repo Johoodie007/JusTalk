@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/forgot_password.dart';
+import 'package:flutter_app/pages/main_page.dart';
 import 'package:flutter_app/pages/profile_page.dart';
 import 'package:flutter_app/pages/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,11 +40,11 @@ class LogInState extends State<LogIn> {
       );
 
       try {
-        // 1. Trim and lowercase email input
+
         final email = _emailController.text.trim();
         final password = _passwordController.text;
 
-        // 2. Add connection timeout
+
         final response = await http.post(
           Uri.parse('http://192.168.1.28:5000/api/user/login'),
           headers: {'Content-Type': 'application/json'},
@@ -51,21 +52,52 @@ class LogInState extends State<LogIn> {
             'email': email,
             'password': password,
           }),
-        ).timeout(const Duration(seconds: 10));
+        );
 
         // 3. Handle different status codes
         final responseBody = jsonDecode(response.body);
         print('Response: ${response.statusCode} - $responseBody');
 
-        if (response.statusCode == 200) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfilePage(
-                userId: responseBody['userId'].toString(),
-              ),
-            ),
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          var responseData = jsonDecode(response.body);
+
+          // Check for missing token or doctorId
+          String? token = responseData['token'];
+          String? userId = responseData['userId'];
+
+          if (token == null || userId == null || token.isEmpty || userId.isEmpty) {
+            throw Exception("❌ Missing token or userId");
+          }
+          var profileResponse = await http.get(
+            Uri.parse('http://192.168.1.28:5000/api/users/$userId'), // NEW route
+            headers: {'Authorization': 'Bearer $token'},
           );
+          if (profileResponse.statusCode == 200 || profileResponse.statusCode == 201) {
+            var profileData = jsonDecode(profileResponse.body);
+
+            // Extract profile data
+            String profilePic = (profileData['profilePic'] ?? "").toString();
+            String bio = (profileData['bio'] ?? "").toString();
+            bool hasProfilePic = profilePic.isNotEmpty;
+            bool hasBio = bio.isNotEmpty;
+
+            // Navigate to the appropriate page based on profile completeness
+            if (hasProfilePic && hasBio) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const MainPage()),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProfilePage(userId: userId)),
+              );
+            }
+          } else {
+            throw Exception("❌ Failed to fetch user profile: ${profileResponse.body}");
+          }
+
         } else {
           scaffold.showSnackBar(
             SnackBar(content: Text(responseBody['msg'] ?? 'Login failed')),

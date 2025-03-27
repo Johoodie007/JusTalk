@@ -22,6 +22,7 @@ dependencies:
    socket_io_client: ^2.0.3
    permission_handler: ^10.2.0
    image_picker: ^1.1.2
+   image_cropper: ^9.0.0
 dependency_overrides:
    permission_handler_android: ^11.0.0
 

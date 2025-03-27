@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');  // 🔹 Added bcryptjs import
-//const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['Patient'], required: true },
+    profilePic: { type: String, default: 'default_profile.png' },
+    bio: { type: String, default: '' },
   verified: { type: Boolean, default: false },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
@@ -45,7 +47,6 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 // Add virtual field for clean user data
 userSchema.virtual('cleanUser').get(function () {
   return {
-    id: this._id,
     email: this.email,
     fullName: this.fullName,
     role: this.role,

@@ -1,17 +1,18 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    //id 'org.jetbrains.kotlin.android' version '1.9.20'
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
     namespace "com.example.flutter_app"
-    compileSdk 34 // Updated from 33 to 34
+    compileSdk 35 // Updated from 33 to 35
 
     defaultConfig {
         applicationId "com.example.flutter_app"
         minSdkVersion 21
-        targetSdkVersion 34 // Updated from 33 to 34
+        targetSdkVersion 35 // Updated from 33 to 35
         versionCode 1
         versionName "1.0"
     }

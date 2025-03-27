@@ -3,7 +3,9 @@ const Doctor = require('../models/doctorModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-// Helper function to generate JWT token
+
+const multer = require('multer');
+
 
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -11,6 +13,23 @@ const generateToken = (id, role) => {
   });
 };
 
+// Fetch doctor profile
+exports.getDoctorProfile = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    res.status(200).json(doctor);
+  } catch (error) {
+    console.error("🔥 Error fetching doctor profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+//register
 exports.registerDoctor = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -41,6 +60,8 @@ exports.registerDoctor = async (req, res) => {
   }
 };
 
+
+//login
 exports.loginDoctor = async (req, res) => {
     try {
         // Find doctor by email
@@ -60,18 +81,72 @@ exports.loginDoctor = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ msg: 'Incorrect password' });
         }
+// Generate a JWT token and send success message
+const token = generateToken(doctor.id, doctor.role);
 
-        // Generate a JWT token and send success message
-        const token = generateToken(doctor.id, doctor.role);
-        res.json({
-            msg: 'Login successful',
-            token: token,
-        });
+res.json({
+    msg: 'Login successful',
+    token: token,
+    doctorId: doctor._id,
+});
+
 
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
     }
+};
+
+
+// Fetch doctor profile
+exports.getDoctorProfile = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    res.status(200).json(doctor);
+  } catch (error) {
+    console.error("🔥 Error fetching doctor profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// 🖼️ Configure image storage using multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Ensure this folder exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage });
+
+// Profile Update Route
+exports.updateDoctorProfile = async (req, res) => {
+  try {
+    const { doctorId, bio } = req.body;
+    let updateData = { bio };
+
+    if (req.file) {
+      updateData.profilePic = `uploads/${req.file.filename}`;
+    }
+
+    const updatedDoctor = await Doctor.findByIdAndUpdate(doctorId, updateData, { new: true });
+
+    if (!updatedDoctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated successfully", updatedDoctor });
+  } catch (err) {
+    console.error("🔥 Server error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // Forgot Password for Doctor

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ProfilePage extends StatefulWidget {
-  final String userId; // 🔹 Pass the logged-in user ID
+  final String userId;
 
   const ProfilePage({super.key, required this.userId});
 
@@ -15,27 +15,27 @@ class ProfilePage extends StatefulWidget {
 
 class ProfilePageState extends State<ProfilePage> {
   TextEditingController bioController = TextEditingController();
-  File? _image; // 🔹 Selected image file
-  String? profilePicUrl; // 🔹 Stores profile image URL
-  String? username; // 🔹 Stores username
+  File? _image; // Selected image file
+  String? profilePicUrl; // Stores profile image URL
+  String? fullName; // Stores username
 
   @override
   void initState() {
     super.initState();
-    _fetchUserProfile(); // 🔹 Load user data when the screen opens
+    _fetchUserProfile();
   }
 
   // Fetch user details from backend
   Future<void> _fetchUserProfile() async {
-    var url = Uri.parse('http://192.168.1.28:3000/get-user/${widget.userId}');
+    var url = Uri.parse('http://192.168.1.28:5000/get-user/${widget.userId}');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       setState(() {
-        username = data['username']; // 🔹 Set the username
+        fullName = data['fullName']; //  Set the username
         bioController.text = data['bio'] ?? '';
-        profilePicUrl = data['profilePic'] != '' ? 'http://192.168.1.28:3000/${data['profilePic']}' : null;
+        profilePicUrl = data['profilePic'] != '' ? 'http://192.168.1.28:5000/${data['profilePic']}' : null;
       });
     }
   }
@@ -52,7 +52,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   // Upload bio and profile picture to backend
   Future<void> _uploadProfile() async {
-    var uri = Uri.parse('http://192.168.1.28:3000/update-profile');
+    var uri = Uri.parse('http://192.168.1.28:5000/update-profile');
     var request = http.MultipartRequest('POST', uri)
       ..fields['userId'] = widget.userId
       ..fields['bio'] = bioController.text;
@@ -94,11 +94,8 @@ class ProfilePageState extends State<ProfilePage> {
 
             ),
             SizedBox(height: 10),
-            // 🔹 Display the username
-            Text(
-              username ?? 'Loading...', // Show username or "Loading..." if not fetched yet
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            Text(fullName ?? 'Loading...', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
             SizedBox(height: 10),
             TextField(
               controller: bioController,
@@ -108,6 +105,7 @@ class ProfilePageState extends State<ProfilePage> {
             ElevatedButton(
               onPressed: _uploadProfile,
               child: Text('Save Profile'),
+
             ),
           ],
         ),

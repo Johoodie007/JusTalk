@@ -2,12 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/doc_sign_up.dart';
 import 'package:flutter_app/pages/sign_up.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/doc_sign_up.dart';
-import 'package:flutter_app/pages/sign_up.dart';
+//import 'package:http/http.dart' as http;
+//import 'dart:convert';
 
 class Role extends StatelessWidget {
   const Role({super.key});

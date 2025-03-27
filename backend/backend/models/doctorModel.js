@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-//const crypto = require('crypto');
 
 const DoctorSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['Doctor'], required: true },
+  profilePic: { type: String, default: 'default_profile.png' },
+  bio: { type: String, default: '' },
   verified: { type: Boolean, default: false },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },

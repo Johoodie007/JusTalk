@@ -1,10 +1,10 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { registerDoctor, loginDoctor, forgotPasswordDoctor, resetPasswordDoctor } = require('../controllers/doctorController');
- // Ensure `resetPasswordDoctor` is also imported
-const router = express.Router();
+const Doctor = require('../models/doctorModel');
 const path = require("path");
 const upload = require('../middleware/multconf'); // Assuming this middleware handles file uploads
+const router = express.Router();
 
 // Register Doctor
 router.post(
@@ -50,6 +50,40 @@ router.post('/login', [
     res.status(500).json({ msg: 'Server error' });
   }
 });
+
+
+router.get('/doctors/:doctorId', async (req, res) => {
+    try {
+        const doctor = await Doctor.findById(req.params.doctorId);
+        if (!doctor) {
+            return res.status(404).json({ message: "Doctor not found" });
+        }
+        res.json(doctor);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+
+
+router.post('/update-doctor-profile', upload.single('profilePic'), async (req, res) => {
+  try {
+    const { doctorId, bio } = req.body;
+    let updateData = { bio };
+
+    if (req.file) {
+      updateData.profilePic = req.file.path; // Ensure that file is saved and returned in response
+    }
+
+    const updatedDoctor = await Doctor.findByIdAndUpdate(doctorId, updateData, { new: true });
+    res.status(200).json({ message: "Profile updated successfully", doctor: updatedDoctor });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // Route for Doctor forgot password
 router.post('/forgot-password', [
   check('email', 'Please include a valid email').isEmail(),
@@ -60,5 +94,7 @@ router.post('/reset-password', [
   check('token', 'Token is required').not().isEmpty(),
   check('password', 'Password must be at least 6 characters').isLength({ min: 6 }),
 ], resetPasswordDoctor);
+
+
 
 module.exports = router;
